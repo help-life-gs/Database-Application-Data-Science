@@ -33,8 +33,7 @@ ALTER TABLE tb_bairro ADD CONSTRAINT tb_bairro_pk PRIMARY KEY ( id_bairro );
 CREATE TABLE tb_chat (
     id_chat      NUMBER NOT NULL,
     desc_chat    VARCHAR2(1000),
-    id_historico NUMBER NOT NULL,
-    CONSTRAINT tabela_json_chk1 CHECK (desc_chat IS JSON)
+    id_historico NUMBER NOT NULL
 );
 
 ALTER TABLE tb_chat ADD CONSTRAINT tb_chat_pk PRIMARY KEY ( id_chat );

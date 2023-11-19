@@ -211,27 +211,34 @@ CREATE OR REPLACE PROCEDURE insert_paciente (
     p_cpf_paciente     IN tb_paciente.cpf_paciente%TYPE
 )
 IS
+    v_valid_cpf BOOLEAN;
 BEGIN
-    INSERT INTO tb_paciente (
-        id_paciente,
-        nm_paciente,
-        dt_nasc_paciente,
-        tel_paciente,
-        id_sexo,
-        id_end_paciente,
-        cpf_paciente
-    )
-    VALUES (
-        p_id_paciente,
-        p_nm_paciente,
-        p_dt_nasc_paciente,
-        p_tel_paciente,
-        p_id_sexo,
-        p_id_end_paciente,
-        p_cpf_paciente
-    );
+    v_valid_cpf := validar_cpf(p_cpf_paciente);
+    IF v_valid_cpf THEN
+        INSERT INTO tb_paciente (
+            id_paciente,
+            nm_paciente,
+            dt_nasc_paciente,
+            tel_paciente,
+            id_sexo,
+            id_end_paciente,
+            cpf_paciente
+        )
+        VALUES (
+            p_id_paciente,
+            p_nm_paciente,
+            p_dt_nasc_paciente,
+            p_tel_paciente,
+            p_id_sexo,
+            p_id_end_paciente,
+            p_cpf_paciente
+        );
 
-    COMMIT;
+        COMMIT;
+    ELSE
+        RAISE_APPLICATION_ERROR(-20003, 'CPF inválido.');
+    END IF;
+
 EXCEPTION
     WHEN DUP_VAL_ON_INDEX THEN
         ROLLBACK;
@@ -257,11 +264,17 @@ CREATE OR REPLACE PROCEDURE insert_login (
     p_id_medico   IN tb_login.id_medico%TYPE DEFAULT NULL
 )
 IS
+    v_valid_email BOOLEAN;
 BEGIN
-    INSERT INTO tb_login (id_login, email_login, pass_login, id_paciente, id_medico)
-    VALUES (p_id_login, p_email_login, p_pass_login, p_id_paciente, p_id_medico);
+    v_valid_email := validar_email(p_email_login);
 
-    COMMIT;
+    IF v_valid_email THEN
+        INSERT INTO tb_login (id_login, email_login, pass_login, id_paciente, id_medico)
+        VALUES (p_id_login, p_email_login, p_pass_login, p_id_paciente, p_id_medico);
+        COMMIT;
+    ELSE
+        RAISE_APPLICATION_ERROR(-20003, 'E-mail inválido.');
+    END IF;
 EXCEPTION
     WHEN DUP_VAL_ON_INDEX THEN
         ROLLBACK;
@@ -355,9 +368,32 @@ call insert_historico(54,'38°C','99%','110BMP',TO_TIMESTAMP('2023-11-18 12:30:0
 call insert_historico(55,'37°C','97%','80BMP',TO_TIMESTAMP('2023-11-18 12:30:00', 'YYYY-MM-DD HH24:MI:SS'),35);
 call insert_historico(56,'39°C','96%','100BMP',TO_TIMESTAMP('2023-11-18 12:30:00', 'YYYY-MM-DD HH24:MI:SS'),36);
 
-
 --------------------------------------------------------------------------------------------------------------
 
+CREATE OR REPLACE PROCEDURE insert_chat (
+    p_id_chat      IN tb_chat.id_chat%TYPE,
+    p_desc_chat    IN tb_chat.desc_chat%TYPE,
+    p_id_historico IN tb_chat.id_historico%TYPE
+)
+IS
+BEGIN
+    INSERT INTO tb_chat (id_chat, desc_chat, id_historico)
+    VALUES (p_id_chat, p_desc_chat, p_id_historico);
 
+    COMMIT;
+EXCEPTION
+    WHEN DUP_VAL_ON_INDEX THEN
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(-20002, 'ID de chat duplicado encontrado.');
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE;
+END insert_chat;
+
+call insert_chat(57,'Conversa com cardiologista',52);
+call insert_chat(58,'Conversa com cardiologista',53);
+call insert_chat(59,'Conversa com cardiologista',54);
+call insert_chat(60,'Conversa com cardiologista',55);
+call insert_chat(61,'Conversa com cardiologista',56);
 
 
