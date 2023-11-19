@@ -76,7 +76,7 @@ CREATE TABLE tb_historico (
     temp_relatorio       VARCHAR2(10),
     oxigen_relatorio     VARCHAR2(10),
     batimentos_relatorio VARCHAR2(10),
-    dt_relatorio         DATE,
+    dt_relatorio         TIMESTAMP,
     id_paciente          NUMBER NOT NULL
 );
 
@@ -86,8 +86,8 @@ CREATE TABLE tb_login (
     id_login    NUMBER NOT NULL,
     email_login VARCHAR2(100),
     pass_login  VARCHAR2(100),
-    id_paciente NUMBER NOT NULL,
-    id_medico   NUMBER NOT NULL
+    id_paciente NUMBER,
+    id_medico   NUMBER
 );
 
 ALTER TABLE tb_login ADD CONSTRAINT tb_login_pk PRIMARY KEY ( id_login );
@@ -112,6 +112,7 @@ ALTER TABLE tb_medico_paciente ADD CONSTRAINT tb_medico_cliente_pk PRIMARY KEY (
 CREATE TABLE tb_paciente (
     id_paciente      NUMBER NOT NULL,
     nm_paciente      VARCHAR2(200),
+    cpf_paciente     VARCHAR2(15),
     dt_nasc_paciente DATE,
     tel_paciente     VARCHAR2(17),
     id_sexo          NUMBER NOT NULL,
