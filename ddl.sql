@@ -22,6 +22,16 @@ DROP TABLE tb_paciente CASCADE CONSTRAINTS;
 
 DROP TABLE tb_sexo CASCADE CONSTRAINTS;
 
+CREATE TABLE tb_log (
+    log_id          NUMBER PRIMARY KEY,
+    user_name       VARCHAR2(255),
+    occurrence_date DATE,
+    error_code      NUMBER,
+    error_message   VARCHAR2(4000)
+);
+
+CREATE SEQUENCE log_sequence
+
 CREATE TABLE tb_bairro (
     id_bairro NUMBER NOT NULL,
     nm_bairro VARCHAR2(200) NOT NULL,

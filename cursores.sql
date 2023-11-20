@@ -48,6 +48,7 @@ END;
 --------------------------------------------------------------------------------------------
 
 --Relatório para saber batimentos,oxigenação, temperatura corporal de um paciente, também o nome e a especialidade do médico que conversou com o paciente
+--Busca por id_cliente
 
 CREATE OR REPLACE PROCEDURE RelatorioMedicoPorPaciente(
     p_ID_PACIENTE INT
